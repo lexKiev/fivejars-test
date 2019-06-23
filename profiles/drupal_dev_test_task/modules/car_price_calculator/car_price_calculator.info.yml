@@ -1,0 +1,10 @@
+name: Car price calculator
+description: Calculating car price depending on size and driver age.
+package: Custom
+
+type: module
+core: 8.x
+
+configure: car_price_calculator.settings
+
+php: 7.2

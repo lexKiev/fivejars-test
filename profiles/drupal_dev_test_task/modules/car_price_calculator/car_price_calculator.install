@@ -1,0 +1,69 @@
+<?php
+
+use Drupal\Core\Database\Database;
+
+/**
+ * Implements hook_schema().
+ *
+ * This defines the database table which will hold calculation result.
+ *
+ * @ingroup  car_price_calculator
+ */
+function car_price_calculator_schema() {
+  $schema['car_price_calculator'] = [
+    'description' => 'Stores car price calculation result.',
+    'fields' => [
+      'id' => [
+        'description' => 'The primary identifier for each item',
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ],
+      'name' => [
+        'description' => 'Name of user',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+      ],
+      'age' => [
+        'description' => 'Age of user',
+        'type' => 'varchar',
+        'length' => 32,
+        'not null' => TRUE,
+        'default' => '',
+      ],
+      'car_size' => [
+        'description' => 'Requested car size',
+        'type' => 'varchar',
+        'length' => 32,
+        'not null' => TRUE,
+        'default' => '',
+      ],
+      'calculated_price' => [
+        'description' => 'Result of calculation',
+        'type' => 'int',
+        'length' => 11,
+        'not null' => TRUE,
+        'default' => 0,
+      ],
+    ],
+    'primary key' => ['id'],
+  ];
+  return $schema;
+}
+
+/**
+ * Implements hook_uninstall().
+ *
+ * This will removes table when the module is uninstalled.
+ *
+ * @ingroup  car_price_calculator
+ */
+function car_price_calculator_uninstall() {
+  $connection = Database::getConnection();
+  $schema = car_price_calculator_schema();
+  foreach ($schema as $name => $table) {
+    $connection->schema()->dropTable($name);
+  }
+}

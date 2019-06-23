@@ -1,0 +1,19 @@
+# define main calculator form route
+car_price_calculator.content:
+  path: '/car-price-calculator'
+  defaults:
+    _controller: '\Drupal\car_price_calculator\Controller\CarPriceCalculatorController::content'
+    _title: 'Car price calculator'
+  requirements:
+    _permission: 'access content'
+
+# define calculator settings form route
+car_price_calculator.settings:
+  path: '/admin/config/car-price-calculator-settings'
+  defaults:
+    _form: '\Drupal\car_price_calculator\Form\CarPriceCalculatorConfigForm'
+    _title: 'Car price calculator settings'
+  requirements:
+    _permission: 'administer site configuration'
+  options:
+    _admin_route: TRUE

@@ -1,0 +1,38 @@
+name: FiveJars Test Task
+type: profile
+core: 8.x
+distribution:
+  name: FiveJars Drupal Developer Test Task.
+dependencies:
+  - node
+  - block
+  - breakpoint
+  - ckeditor
+  - color
+  - config
+  - contextual
+  - menu_link_content
+  - datetime
+  - block_content
+  - quickedit
+  - editor
+  - image
+  - menu_ui
+  - options
+  - path
+  - page_cache
+  - dynamic_page_cache
+  - big_pipe
+  - taxonomy
+  - dblog
+  - shortcut
+  - toolbar
+  - field_ui
+  - file
+  - rdf
+  - views
+  - views_ui
+  - car_price_calculator
+themes:
+  - bartik
+  - seven

@@ -1,0 +1,19 @@
+<?php
+
+/**
+ * Implements hook_theme
+ *
+ * @param $existing
+ * @param $type
+ * @param $theme
+ * @param $path
+ *
+ * @return array
+ */
+function car_price_calculator_theme($existing, $type, $theme, $path) {
+  return [
+    'car_price_calculator_template' => [
+      'variables' => [],
+    ],
+  ];
+}

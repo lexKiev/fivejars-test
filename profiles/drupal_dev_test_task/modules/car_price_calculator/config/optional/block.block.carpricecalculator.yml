@@ -1,0 +1,24 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - car_price_calculator
+    - system
+  theme:
+    - bartik
+id: carpricecalculator
+theme: bartik
+region: content
+weight: 1
+provider: null
+plugin: car_price_calculator_form_block
+settings:
+  id: car_price_calculator_form_block
+  provider: car_price_calculator
+  label_display: visible
+visibility:
+  request_path:
+    id: request_path
+    pages: /car-price-calculator
+    negate: false
+    context_mapping: {  }
