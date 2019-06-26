@@ -3,6 +3,7 @@
 namespace Drupal\car_price_calculator\Form;
 
 
+use Drupal\car_price_calculator\Classes\Calculator;
 use Drupal\Core\Ajax\AjaxResponse;
 use Drupal\Core\Ajax\InvokeCommand;
 use Drupal\Core\Form\FormBase;
@@ -58,11 +59,6 @@ class CarPriceCalculatorForm extends FormBase {
       ],
     ];
     
-    $form['calculation_result_hidden'] = [
-      '#type' => 'hidden',
-      '#attributes' => ['id' => ['calculation_result_hidden']],
-    ];
-    
     $form['submit'] = [
       '#type' => 'submit',
       '#value' => $this->t('Submit'),
@@ -73,7 +69,6 @@ class CarPriceCalculatorForm extends FormBase {
   
   public function changeOptionsAjax(array &$form, FormStateInterface $form_state) {
     $inputAge = $form_state->getValue('age');
-    $form['name11'] = '1';
     $inputCarSize = $form_state->getValue('car_size');
     $response = new AjaxResponse();
     //early return in case of placeholders selected
@@ -88,36 +83,13 @@ class CarPriceCalculatorForm extends FormBase {
       return $response;
     }
     
-    //getting fp & vp values from configs
-    $fixedPrice = \Drupal::config('car_price_calculator.settings')
-      ->get('fixed_price');
-    $variablePrice = \Drupal::config('car_price_calculator.settings')
-      ->get('variable_price');
-    
-    //since we change age only in case of '20-24' selected, setting it to 0 by default
-    $age = 0;
-    if ($inputAge == '20-24') {
-      $age = 0.2;
-    }
-    
-    switch ($inputCarSize) {
-      case 'medium':
-        $carSize = 0.5;
-        break;
-      case 'large':
-        $carSize = 1;
-        break;
-      default:
-        $carSize = 0;
-    }
-    
     //calculating
-    $total_price = round($fixedPrice + $variablePrice * (1 + $age + $carSize));
-    $formatted_price = '$' . $total_price;
+    $totalPrice = Calculator::calculate($inputAge,$inputCarSize);
+    
+    $formattedPrice = '$' . $totalPrice;
     
     //set result to input
-    $response->addCommand(new InvokeCommand('#calculation_result_hidden', 'val', [$total_price]));
-    $response->addCommand(new InvokeCommand('#calculation_result', 'val', [$formatted_price]));
+    $response->addCommand(new InvokeCommand('#calculation_result', 'val', [$formattedPrice]));
     
     return $response;
   }
@@ -146,14 +118,15 @@ class CarPriceCalculatorForm extends FormBase {
     $name = $form_state->getValue('name');
     $age = $form_state->getValue('age');
     $carSize = $form_state->getValue('car_size');
-    $carPrice = $form_state->getValue('calculation_result_hidden');
+    
+    $totalPrice = Calculator::calculate($age,$carSize);
     
     $query = \ Drupal:: database()->insert('car_price_calculator');
     $query->fields([
       'name' => $name,
       'age' => $age,
       'car_size' => $carSize,
-      'calculated_price' => $carPrice,
+      'calculated_price' => $totalPrice,
     ]);
     $query->execute();
     
